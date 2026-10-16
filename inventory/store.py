@@ -1,6 +1,7 @@
 """A small in-memory inventory for a shop."""
 
 from dataclasses import dataclass
+from typing import List
 
 
 @dataclass
@@ -26,6 +27,8 @@ class Inventory:
         item = self.items.get(name)
         if item is None:
             raise KeyError(f"no such item: {name}")
+        if quantity > item.quantity:
+            raise ValueError(f"only {item.quantity} {name} in stock")
         item.quantity -= quantity
         if item.quantity == 0:
             del self.items[name]
